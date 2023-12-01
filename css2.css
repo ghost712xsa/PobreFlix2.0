@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 20%;
+    min-height: 20%;
+}

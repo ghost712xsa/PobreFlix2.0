@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+    <link rel="icon" type="image/x-icon" href="imagens/novalogo.png">
+    <title>PobreFlix</title>
+
+</head>
+<body>
+
+    <style>
+        /* Estilos para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999; /* Defina um valor alto para o z-index */
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black; /* Fundo preto */
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão de download */
+        .download-button, .watch-button {
+            display: inline-block;
+            padding: 70px 120px; /* Tamanho maior */
+            background-color: red; /* Cor do botão vermelho */
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            margin: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão "Assistir Online" */
+        .watch-button {
+            background-color: green; /* Cor do botão verde */
+        }
+
+        /* Estilos para o vídeo incorporado */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Proporção de 16:9 para o vídeo */
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Aumente o tamanho do vídeo */
+            height: 100%; /* Aumente o tamanho do vídeo */
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #e50914;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #ff141a;
+        }
+
+        /* Estilos para as imagens do conteúdo */
+        .movie-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .movie-card {
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .movie-card img {
+            width: 300px;
+            height: 450px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estilos para as imagens de fundo */
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .background-images img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Define uma classe para cada imagem de fundo */
+        .background-1 img {
+            opacity: 0;
+        }
+
+        .background-2 img {
+            opacity: 0;
+        }
+
+        .background-3 img {
+            opacity: 0;
+        }
+    </style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            height: 2000px;
+            background: #f0f0f0;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .scrolling-text {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: "black;";
+            color: "black;";
+            padding: 10px;
+            display: none;
+             z-index: 998;
+        }
+    </style>
+
+    <style>
+        /* Estilos CSS para o pop-up */
+        .popup-container {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .popup-message {
+            color: red;
+            font-weight: bold;
+        }
+
+        .close-button,
+        .do-not-show-again-button {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .close-button {
+            margin-right: 10px;
+        }
+    </style>
+
+    <style>
+/* Estilos para as imagens do conteúdo2 */
+.imagem-com-contorno {
+  border: 2px solid transparent; /* Define uma borda transparente inicialmente */
+  transition: border-color 0.3s ease; /* Adiciona uma transição suave para o efeito */
+}
+
+.imagem-com-contorno:hover {
+  border-color: white; /* Define a cor branca quando o mouse está sobre a imagem */
+}
+
+
+    </style>
+
+  <!-- Pop-up -->
+  <div id="popup" class="popup-container">
+    <div class="popup-content">
+      <p class="popup-message">
+        <font color="red">
+        <H1>ATENÇÃO! </H1>
+        <br>
+        ANTES DE TENTAR REPRODUZIR QUALQUER FILME<br>
+        EM NOSSO SITE VÁ ATÉ A ÁREA DE DOWNLOADS<br> 
+        E BAIXE O ADBLOCK. FAÇA ISSO PARA EVITAR<br> 
+        QUALQUER TIPO DE ANÚNCIO DUVIDOSO. <br>
+    </font>
+        
+      </p>
+      <button class="close-button" onclick="fecharPopup()">Entendi</button>
+       <button class="do-not-show-again-button" onclick="naoExibirNovamente()">Não exibir novamente</button>
+    </div>
+  </div>
+
+  
+
+</head>
+<body><nav id="nav">
+   
+</nav>
+<div>
+    
+</div>
+<!-- Barra lateral com os botões -->
+    <div id="sidebar">
+        
+        <img src="icon1.png" width="100" height="100">
+   
+        <br>
+    <a href="login_inicial.html"> 🔙 ALTERAR O PERFIL </a>
+        <br>
+        <br>
+        <br>
+        <br>
+   <p id="meuTexto">    
+<a href="guia de downloads.html">
+
+ ARÉA DE DOWNLOADS </a>
+
+</p>
+<br>
+<p id="meuTexto"> 
+        <a href="area de downloads.html" >FILMES DOWNLOAD </a>
+        </p>
+        <br>
+        <p id="meuTexto"> 
+        <a href="assistir agora.html">
+            ASSISTIR AGORA
+        </a>
+        </p>
+
+        <p id="meuTexto"> 
+        <a href="astevoids - inicio.html">
+            JOGOS INTERATIVOS
+        </a>
+        </p>
+        
+
+        <br>
+        <br>
+        Principais streamings inclusos:
+        <ul style="list-style-type: circle;">
+            
+            
+<li>Star +</li>
+<li>HBO MAX</li>
+<li>Prime video</li>
+<li>Netflix</li>
+
+
+        
+
+    
+
+        
+    </div>
+
+    <script>
+        var sidebar = document.getElementById("sidebar");
+
+        // Função para mostrar a barra lateral
+        sidebar.addEventListener("mouseenter", function() {
+            sidebar.style.left = "0";
+
+        });
+
+        // Função para ocultar a barra lateral
+        sidebar.addEventListener("mouseleave", function(event) {
+            sidebar.style.left = "-200px";
+        });
+
+        // Fechar a barra lateral quando o mouse clica fora dela
+        document.addEventListener("click", function(event) {
+            if (event.target !== sidebar) {
+                sidebar.style.left = "-200px";
+            }
+        });
+    </script>
+
+    
+    <div class="scrolling-text" id="fixed-text">
+        <h1> <font color="red">P</font>obre<font color="red">F</font>lix</h1>
+    </div>
+
+
+    
+    <script>
+        window.addEventListener('scroll', function() {
+            const scrollingText = document.getElementById('fixed-text');
+            if (window.scrollY > 200) {
+                scrollingText.style.display = 'block';
+            } else {
+                scrollingText.style.display = 'none';
+            }
+        });
+    </script>
+    <style>
+        /* Estilo para a barra lateral */
+        #sidebar {
+            position: fixed;
+            left: -200px; /* Define a posição inicial oculta */
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            transition: left 0.3s;
+            z-index: 999
+        }
+        
+        /* Estilo para os botões na barra lateral */
+        #sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+
+        }
+    </style>
+    <style>
+ #meuTexto {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#meuTexto::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #FF0000; /* Cor da linha */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0); /* Inicialmente, a linha tem largura zero */
+    transform-origin: bottom left; /* A origem da transformação é o canto inferior esquerdo */
+    transition: transform 0.3s ease; /* Adiciona um efeito de transição suave à largura */
+}
+
+#meuTexto:hover::after {
+    transform: scaleX(1); /* Quando o mouse está sobre o texto, a largura da linha é ajustada para 100% */
+}
+
+
+
+
+    </style>
+
+
+    <style>
+   .image-container {
+  position: relative;
+  width: 1500px;
+  height: 680px;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Para cobrir todo o contêiner mantendo a proporção */
+}
+
+
+    .button-overlay {
+        position: absolute;
+        top:  70%;
+        left: 25%;
+        transform: 
+        translate(-50%, 50%);
+        background-color: #FF0000;
+        color: #fff;
+        padding: 10px 23px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .button-overlay2 {
+        position: absolute;
+        top:  60%;
+        left: 10%;
+        transform: 
+        translate(-50%, 50%);
+        background-color: #FF0000;
+        color: #fff;
+        padding: 10px 50px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .button-overlay3 {
+        position: absolute;
+        top:  25%;
+        left: 25%;
+        transform: 
+        translate(-50%, 50%);
+        background-color: #FF0000;
+        color: #fff;
+        padding: 10px 50px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    
+
+</style>
+                
+
+<style>
+    .image-container2 {
+        position: relative;
+        width: 400px;
+        height: 400px;
+    }
+    
+    .image2 {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .text-overlay2 {
+        position: absolute;
+        top: 50%;
+        left: 25%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    
+</style>
+
+
+
+
+<!--ESTILO PARA OS BOTÕES DE CATEGORIA (TERROR, AÇÃO...-->
+
+<style>
+   .red-button {
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+   }
+
+</style>
+
+
+   
+
+<style>
+.red-button4 {
+    position: absolute;
+    top:  50%;
+    left: ;
+    right: 200;
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 40px;
+    
+    
+   }
+   </style>
+
+   <style>
+        .marca-texto {
+            background-color: black; /* Define a cor de fundo para o destaque */
+            color: white; /* Define a cor do texto para o destaque */
+            border-radius: 5px; /* Define o raio de borda para arredondar os cantos */
+            opacity: 0.89; /* Define a opacidade (transparência) do marcador de texto */
+        }
+    </style>
+
+    <style>
+        .marca-texto2 {
+            background-color: black; /* Define a cor de fundo para o destaque */
+            color: white; /* Define a cor do texto para o destaque */
+            border-radius: 5px; /* Define o raio de borda para arredondar os cantos */
+            opacity: 0.89; /* Define a opacidade (transparência) do marcador de texto */
+        }
+    </style>
+
+    <style>
+#trailerVideo {
+    position: absolute;
+    top: -250px; /* Altura em pixels a partir do topo */
+    left: 900px; /* Distância em pixels a partir da esquerda */
+}
+
+
+
+
+</style>
+
+
+<style> 
+.imagem-container-categoria {
+    position: relative;
+    display: inline-block;
+}
+
+.imagem-container-categoria img {
+    width: 100%; /* Defina o tamanho da imagem conforme necessário */
+}
+
+.texto-overlay-categoria {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo para a sobreposição */
+    color: #fff; /* Cor do texto */
+    text-align: center;
+    line-height: 100%;
+    opacity: 0; /* Inicialmente, o texto estará oculto */
+    transition: opacity 0.3s; /* Efeito de transição suave */
+}
+
+.imagem-container-categoria:hover .texto-overlay-categoria {
+    opacity: 1; /* Quando você passar o mouse sobre o contêiner da imagem, o texto aparecerá */
+}
+
+
+
+
+
+</style>
+
+<style>
+        .texto-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #f7f8fa; /* Cor do texto */
+        }
+
+        .emoji {
+            font-size: 36px; /* Tamanho do emoji */
+            margin-right: 10px; /* Espaço entre o emoji e o texto */
+            animation: bounce 2s infinite; /* Adiciona uma animação para fazer o emoji "subir" */
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0); /* Define a posição inicial e final */
+            }
+            40% {
+                transform: translateY(-20px); /* Define a posição máxima "subindo" */
+            }
+        }
+    </style>
+
+    
+
+
+    
+
+
+
+
+
+
+
+
+
+
+    <!-- Modal para a janela flutuante -->
+    
+
+    <header>
+       
+        
+           
+            <img src="Screenshot_12.png" width="" height="80" alt="Área 3" usemap="#imagemMap"> &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<img src="lupa.png" width="" height="35"> &nbsp; <img src="sino.png" width="" height="35"> &nbsp; <a href="login_inicial.html"> <img src="icon1.png" width="" height="35"></a></h1> 
+        
+    
+       
+       
+
+
+
+
+            <div class="image-container">
+                <video autoplay  loop class="image"  muted="false">
+                  <source src="a morte do demonio trailer.mp4" type="video/mp4">
+                  
+                </video>
+                <div class="gradient-overlay"></div>
+                
+              </div>
+              
+    
+
+
+        
+    
+
+    <div class="gradient-overlay">
+        <a href="magnet:?xt=urn:btih:451f3e80a8599f76575781db6bf9e0a589a12cd2&dn=A%20Morte%20do%20Dem%c3%b4nio%20-%20A%20Ascens%c3%a3o%202023%201080p%20WEB-DL%20DUAL%205.1&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce">
+            
+        <button class="button-overlay"><font color="white"><center> BAIXAR AGORA! </font></button> </a>
+            <br>
+            
+   
+    
+</center>
+    
+<div class="text-overlay2">
+<span class="marca-texto2">
+A Morte do Demonio
+
+
+
+  &nbsp;&nbsp;&nbsp;18+&nbsp;&nbsp;&nbsp;
+<br>
+⭐ ⭐ ⭐ ⭐ ✩ - IMDB
+ 
+<br>
+<br>
+    <font color="black">
+     <span class="marca-texto">
+        Uma mulher se encontra em uma luta por sua vida quando<br> 
+        um livro antigo dá à luz demônios sedentos por sangue.<br>
+        Eles se tornam cada vez mais agressivos em um prédio em Los Angeles.<br>
+       
+                       </font>
+
+                       </span> 
+                            
+ 
+
+
+
+</div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+
+<H2> 
+    <a id="bombando"></a>
+    <div class="texto-container">
+       
+        <div class="texto"><FONT COLOR="RED">FILMES</FONT> BOMBANDO</div>
+        <div class="emoji">🚀</div>
+        <BR>
+       
+        
+    </div>
+<BR>
+
+
+</H2>
+   <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="https://rkplayer.com/e/tt21807222#MA==">
+            <img src="jogos mortais x.jpg" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+        JOGOS MORTAIS X  
+        <BR>
+
+            ⭐ ⭐ ⭐ ⭐ ✩ - IMDB
+            </center>
+        </div>
+        <!--FILME 2 -->
+<div class="movie-card" onmouseenter="changeBackground(2)">
+        <a href="https://rkplayer.com/e/tt9603212#MA==">
+            <img src="Missão impossivel acerto de contas.jpg" width="300" height="450" 
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+       </a>
+       <BR>
+       <center>
+         
+        MISSÃO: IMPOSSÍVEL - ACERTO <BR>
+        DE CONTAS PARTE 1
+        <BR>
+        ⭐ ⭐ ⭐ ✩ ✩ - IMDB   
+       </center>
+       
+        </div>
+
+
+           <!--FILME 3  -->
+
+        <div class="movie-card" onmouseenter="changeBackground(2)">
+        <a href="https://rkplayer.com/e/tt7284204#MQ==">
+            <img src="verão 2003.jpg" width="300" height="450" 
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+       </a>
+       <BR>
+       <center>
+         
+        VERÃO 2003 <BR>
+        
+        
+        ⭐ ⭐ ⭐ ✩ ✩ - IMDB   
+       </center>
+       
+        </div>
+
+
+
+        <!--FILME 4 -->
+
+        <div class="movie-card" onmouseenter="changeBackground(4)">
+            <a href="sobrenatural.html">
+            <img src="Sobrenatural-a-porta-vermelha.png" width="300" height="450" 
+             onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+         </a>
+         <br>
+         <center>
+             SOBRENATURAL: A PORTA VERMELHA
+             <BR>
+             ⭐ ⭐ ⭐ ✩ ✩ - IMDB
+         </center>   
+        </div>
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<br>
+
+</div>
+<br>
+<br>
+<br>
+<h3> CÓMEDIA</h3>
+
+
+
+    <img src="img-barra1.png"  width="300" height="180" class="imagem-com-contorno" alt="Minha Imagem">
+    <img src="img-menu2.png"  width="300" height="180" class="imagem-com-contorno" alt="Minha Imagem">
+    <img src="img-menu3.png" width="300" height="180" class="imagem-com-contorno" alt="Minha Imagem">
+    <img src="img-menu4.png" width="300" height="180" class="imagem-com-contorno" alt="Minha Imagem">
+    <br>
+    <br>
+    <h3> TERROR</h3>
+    <img src="img-menu5.png"  width="300" height="180" class="imagem-com-contorno" alt="Minha Imagem">
+    <img src="img-menu6.png"  width="300" height="180" class="imagem-com-contorno" alt="Minha Imagem">
+    <img src="img-menu7.png" width="300" height="180" class="imagem-com-contorno" alt="Minha Imagem">
+    <img src="img-menu8.png" width="300" height="180" class="imagem-com-contorno" alt="Minha Imagem">
+
+
+</div>
+ 
+  
+<HR>
+
+
+             <H2> <center>EM BREVE!   🎬</center> </H2>
+<br>
+<br>
+<img src="O exorcista o devoto.png" width="300" height="450">
+<img src="som da liberdade.jpg" width="300" height="450">
+<img src="mega tubarão.jpg" width="300" height="450">
+<img src="noite infeliz.jpg" width="300" height="450">
+
+<hr>
+<center>
+<H2> CATEGORIAS: </H2>
+<br>
+<br>
+<a href="terror.html">
+<div class="imagem-container-categoria">
+        <img src="hallowenn.png"  alt="Imagem de Terror">
+        <div class="texto-overlay-categoria">TERROR</div>
+    </div>
+</a>
+    <a href="ação.html">
+    <div class="imagem-container-categoria">
+        <img src="explosão.png"  alt="Imagem de Terror">
+        <div class="texto-overlay-categoria">AÇÃO</div>
+    </div>
+</a>
+<a href="comedia.html">
+    <div class="imagem-container-categoria">
+        <img src="comedia.png"  alt="Imagem de Terror">
+        <div class="texto-overlay-categoria">COMÉDIA</div>
+    </div>
+</a>
+
+</center>
+ 
+    </a>
+</font>
+</H3>
+
+
+
+        
+        
+        
+    
+  
+
+    
+
+    
+    <script> 
+       const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=>{
+    if(window.scrollY >=100){
+        nav.classList.add('nav__black');
+    } else{
+        nav.classList.remove('nav__black');
+    }
+
+})
+
+
+    </script>
+
+
+    <script>
+document.getElementById('trailerButton').addEventListener('click', function() {
+    // Exibe o vídeo ao clicar no botão
+    document.getElementById('trailerVideo').style.display = 'block';
+    
+    // Defina a origem do iframe para o vídeo do YouTube
+    document.getElementById('trailerVideo').src = "https://www.youtube.com/embed/SEU_VIDEO_ID?autoplay=1";
+});
+</script>
+
+<script>
+    // Função para verificar se deve exibir o pop-up ou não
+    function verificarExibicaoPopup() {
+        if (getCookie('exibirPopup') !== 'false') {
+            var popup = document.getElementById('popup');
+            popup.style.display = 'flex'; // Exibe o pop-up
+        }
+    }
+
+    // Função para criar ou obter um cookie
+    function setCookie(name, value, days) {
+        var expires = '';
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = '; expires=' + date.toUTCString();
+        }
+        document.cookie = name + '=' + (value || '') + expires + '; path=/';
+    }
+
+    function getCookie(name) {
+        var nameEQ = name + '=';
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            while (cookie.charAt(0) === ' ') {
+                cookie = cookie.substring(1, cookie.length);
+            }
+            if (cookie.indexOf(nameEQ) === 0) {
+                return cookie.substring(nameEQ.length, cookie.length);
+            }
+        }
+        return null;
+    }
+
+    // Função para fechar o pop-up
+    function fecharPopup() {
+        var popup = document.getElementById('popup');
+        popup.style.display = 'none'; // Oculta o pop-up
+    }
+
+    // Função para definir a preferência de não exibir o pop-up novamente
+    function naoExibirNovamente() {
+        setCookie('exibirPopup', 'false', 365); // Define o cookie para não exibir novamente por 365 dias
+        fecharPopup(); // Fecha o pop-up
+    }
+
+    // Verificar se deve exibir o pop-up ao carregar a página
+    window.onload = verificarExibicaoPopup;
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+    <link rel="icon" type="image/x-icon" href="imagens/novalogo.png">
+    <title>PobreFlix</title>
+
+</head>
+<body>
+
+    <style>
+        /* Estilos para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999; /* Defina um valor alto para o z-index */
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black; /* Fundo preto */
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão de download */
+        .download-button, .watch-button {
+            display: inline-block;
+            padding: 70px 120px; /* Tamanho maior */
+            background-color: red; /* Cor do botão vermelho */
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            margin: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão "Assistir Online" */
+        .watch-button {
+            background-color: green; /* Cor do botão verde */
+        }
+
+        /* Estilos para o vídeo incorporado */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Proporção de 16:9 para o vídeo */
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Aumente o tamanho do vídeo */
+            height: 100%; /* Aumente o tamanho do vídeo */
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #e50914;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #ff141a;
+        }
+
+        /* Estilos para as imagens do conteúdo */
+        .movie-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .movie-card {
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .movie-card img {
+            width: 300px;
+            height: 450px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estilos para as imagens de fundo */
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .background-images img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Define uma classe para cada imagem de fundo */
+        .background-1 img {
+            opacity: 0;
+        }
+
+        .background-2 img {
+            opacity: 0;
+        }
+
+        .background-3 img {
+            opacity: 0;
+        }
+    </style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            height: 2000px;
+            background: #f0f0f0;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .scrolling-text {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: "black;";
+            color: "black;";
+            padding: 10px;
+            display: none;
+             z-index: 998;
+        }
+    </style>
+
+  
+
+</head>
+<body><nav id="nav">
+   
+</nav>
+<div>
+    
+</div>
+<!-- Barra lateral com os botões -->
+    <div id="sidebar">
+        <img src="icon3.jpg" width="100" height="100">
+        <br>
+    <a href="login_inicial.html"> 🔙 ALTERAR O PERFIL </a>
+        <br>
+        <br>
+        <br>
+        <br>
+   <p id="meuTexto">    
+<a href="guia de downloads.html">
+
+ Aréa de downloads 🔗</a>
+
+</p>
+<br>
+
+        
+
+        <br>
+        <br>
+        Categorias:
+        <ul style="list-style-type: circle;">
+            
+            
+<li>Star +</li>
+<li>HBO MAX</li>
+<li>Prime video</li>
+<li>Netflix</li>
+
+
+        
+
+    
+
+        
+    </div>
+
+    <script>
+        var sidebar = document.getElementById("sidebar");
+
+        // Função para mostrar a barra lateral
+        sidebar.addEventListener("mouseenter", function() {
+            sidebar.style.left = "0";
+
+        });
+
+        // Função para ocultar a barra lateral
+        sidebar.addEventListener("mouseleave", function(event) {
+            sidebar.style.left = "-200px";
+        });
+
+        // Fechar a barra lateral quando o mouse clica fora dela
+        document.addEventListener("click", function(event) {
+            if (event.target !== sidebar) {
+                sidebar.style.left = "-200px";
+            }
+        });
+    </script>
+
+    
+    <div class="scrolling-text" id="fixed-text">
+        <h1> <font color="red">P</font>obre<font color="red">F</font>lix
+       <font color="blue">k</font><font color="yellow">i</font><font color="green">d</font><font color="red">s</font>
+
+        </h1>
+    </div>
+
+
+    
+    <script>
+        window.addEventListener('scroll', function() {
+            const scrollingText = document.getElementById('fixed-text');
+            if (window.scrollY > 200) {
+                scrollingText.style.display = 'block';
+            } else {
+                scrollingText.style.display = 'none';
+            }
+        });
+    </script>
+    <style>
+        /* Estilo para a barra lateral */
+        #sidebar {
+            position: fixed;
+            left: -200px; /* Define a posição inicial oculta */
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            transition: left 0.3s;
+            z-index: 999
+        }
+        
+        /* Estilo para os botões na barra lateral */
+        #sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+
+        }
+    </style>
+    <style>
+ #meuTexto {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#meuTexto::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #FF0000; /* Cor da linha */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0); /* Inicialmente, a linha tem largura zero */
+    transform-origin: bottom left; /* A origem da transformação é o canto inferior esquerdo */
+    transition: transform 0.3s ease; /* Adiciona um efeito de transição suave à largura */
+}
+
+#meuTexto:hover::after {
+    transform: scaleX(1); /* Quando o mouse está sobre o texto, a largura da linha é ajustada para 100% */
+}
+
+
+
+
+    </style>
+
+
+    <style>
+    .image-container {
+        position: relative;
+        width: 1560 px;
+        height: 800px;
+    }
+    
+    .image {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .gradient-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 500px; /* ajuste a altura do degradê conforme necessário */
+        background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1));
+
+    }
+    .button-overlay {
+        position: absolute;
+        top:  15%;
+        left: 25%;
+        transform: 
+        translate(-50%, 50%);
+        background-color: #FF0000;
+        color: #fff;
+        padding: 10px 23px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .button-overlay2 {
+        position: absolute;
+        top:  60%;
+        left: 10%;
+        transform: 
+        translate(-50%, 50%);
+        background-color: #FF0000;
+        color: #fff;
+        padding: 10px 50px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .button-overlay3 {
+        position: absolute;
+        top:  25%;
+        left: 25%;
+        transform: 
+        translate(-50%, 50%);
+        background-color: #FF0000;
+        color: #fff;
+        padding: 10px 50px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    
+
+</style>
+                
+
+<style>
+    .image-container2 {
+        position: relative;
+        width: 400px;
+        height: 400px;
+    }
+    
+    .image2 {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .text-overlay2 {
+        position: absolute;
+        top: -13%;
+        left: 25%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    
+</style>
+
+
+
+
+<!--ESTILO PARA OS BOTÕES DE CATEGORIA (TERROR, AÇÃO...-->
+
+<style>
+   .red-button {
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+   }
+
+</style>
+
+
+   
+
+<style>
+.red-button4 {
+    position: absolute;
+    top:  50%;
+    left: ;
+    right: 200;
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 40px;
+    
+    
+   }
+   </style>
+
+   <style>
+        .marca-texto {
+            background-color: black; /* Define a cor de fundo para o destaque */
+            color: white; /* Define a cor do texto para o destaque */
+            border-radius: 5px; /* Define o raio de borda para arredondar os cantos */
+            opacity: 0.89; /* Define a opacidade (transparência) do marcador de texto */
+        }
+    </style>
+
+    <style>
+        .marca-texto2 {
+            background-color: black; /* Define a cor de fundo para o destaque */
+            color: white; /* Define a cor do texto para o destaque */
+            border-radius: 5px; /* Define o raio de borda para arredondar os cantos */
+            opacity: 0.89; /* Define a opacidade (transparência) do marcador de texto */
+        }
+    </style>
+
+    <style>
+#trailerVideo {
+    position: absolute;
+    top: -250px; /* Altura em pixels a partir do topo */
+    left: 900px; /* Distância em pixels a partir da esquerda */
+}
+
+
+
+
+</style>
+
+
+<style> 
+.imagem-container-categoria {
+    position: relative;
+    display: inline-block;
+}
+
+.imagem-container-categoria img {
+    width: 100%; /* Defina o tamanho da imagem conforme necessário */
+}
+
+.texto-overlay-categoria {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo para a sobreposição */
+    color: #fff; /* Cor do texto */
+    text-align: center;
+    line-height: 100%;
+    opacity: 0; /* Inicialmente, o texto estará oculto */
+    transition: opacity 0.3s; /* Efeito de transição suave */
+}
+
+.imagem-container-categoria:hover .texto-overlay-categoria {
+    opacity: 1; /* Quando você passar o mouse sobre o contêiner da imagem, o texto aparecerá */
+}
+
+
+
+
+
+</style>
+
+<style>
+        .texto-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #f7f8fa; /* Cor do texto */
+        }
+
+        .emoji {
+            font-size: 36px; /* Tamanho do emoji */
+            margin-right: 10px; /* Espaço entre o emoji e o texto */
+            animation: bounce 2s infinite; /* Adiciona uma animação para fazer o emoji "subir" */
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0); /* Define a posição inicial e final */
+            }
+            40% {
+                transform: translateY(-20px); /* Define a posição máxima "subindo" */
+            }
+        }
+    </style>
+
+    
+
+
+
+
+
+
+
+
+
+
+    <!-- Modal para a janela flutuante -->
+    
+
+    <header>
+       <h1> <font color="red">P</font>obre<font color="red">F</font>lix
+<font color="blue">k</font><font color="yellow">i</font><font color="green">d</font><font color="red">s</font>
+       </h1>
+        
+  
+
+
+<!-- <img src="img07.jpg" width="1560" height="800"> -->
+
+<div class="image-container">
+<img  src="Wall_sonic.jpg" usemap="#mapaTheboys" class="image" alt="Imagem"width="1560" height="800">
+    
+
+
+        
+    
+
+    <div class="gradient-overlay">
+        <a href="magnet:?xt=urn:btih:2aaabb9d6a9b3de88f3964a73a42aa9307bfa3e3&dn=Sonic%202%20O%20Filme%202022%201080p%20WEB-DL%20DUAL%205.1&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.internetwarriors.net%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce&tr=udp%3a%2f%2fexodus.desync.com%3a6969%2fannounce&tr=udp%3a%2f%2fopen.stealth.si%3a80%2fannounce&tr=udp%3a%2f%2fwww.torrent.eu.org%3a451%2fannounce">
+        <button class="button-overlay"><font color="white"><center> BAIXAR AGORA! </font></button>
+    </a>
+    
+</center>
+    
+<div class="text-overlay2">
+<span class="marca-texto2">
+SONIC 2
+
+
+
+  &nbsp;&nbsp;&nbsp;10+&nbsp;&nbsp;&nbsp;
+<br>
+⭐ ⭐ ⭐ ⭐ ✩ - IMDB
+ 
+<br>
+<br>
+    <font color="black">
+     <span class="marca-texto">
+    O Dr. Robotnik retorna à procura de uma esmeralda mística<br>
+    que tem o poder de destruir civilizações. Para detê-lo, <br>
+    Sonic se une a seu antigo parceiro, Tails, e parte em <br>
+    uma jornada para encontrar a joia antes<br>
+    que ela caia em mãos erradas.<br>
+                       </font>
+
+                       </span> 
+                            
+ 
+
+
+
+</div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+
+<H2> 
+    <div class="texto-container">
+        
+        <div class="texto"><FONT COLOR="RED">FILMES</FONT> BOMBANDO</div>
+        <div class="emoji">🚀</div>
+        <BR>
+
+        
+    </div>
+<BR>
+
+
+</H2>
+   <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="https://rkplayer.com/e/tt8637498#MA==">
+            <img src="o rei macaco.png" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+        O REI MACACO  
+        <BR>
+
+            ⭐ ⭐ ⭐ ⭐ ✩ - IMDB
+            </center>
+        </div>
+        <!--FILME 2 -->
+<div class="movie-card" onmouseenter="changeBackground(2)">
+        <a href="https://rkplayer.com/e/tt15789038#MA==">
+            <img src="elementos.jpg" width="300" height="450" 
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+       </a>
+       <BR>
+       <center>
+         
+       ELEMENTOS <BR>
+        
+        <BR>
+        ⭐ ⭐ ⭐ ✩ ✩ - IMDB   
+       </center>
+       
+        </div>
+
+
+           <!--FILME 3  -->
+
+        <div class="movie-card" onmouseenter="changeBackground(2)">
+        <a href="https://rkplayer.com/e/tt9362722#MA==">
+            <img src="homen aranha.jpg" width="300" height="450" 
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+       </a>
+       <BR>
+       <center>
+         
+        HOMEN ARANHA <BR>
+        ATRÁVES DO ARANHA VERSO
+        <BR>
+        
+        
+        ⭐ ⭐ ⭐ ✩ ✩ - IMDB   
+       </center>
+       
+        </div>
+
+
+
+        <!--FILME 4 -->
+
+        <div class="movie-card" onmouseenter="changeBackground(4)">
+            <a href="https://rkplayer.com/e/tt8589698#MA==">
+            <img src="tartarugas ninja.jpg" width="300" height="450" 
+             onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+         </a>
+         <br>
+         <center>
+             AS TARTARUGAS NINJA: 
+             <BR>
+             CAOS MUTANTE
+             <BR>
+             ⭐ ⭐ ⭐ ✩ ✩ - IMDB
+         </center>   
+        </div>
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<br>
+
+</div>
+<br>
+<br>
+<br>
+
+
+
+             
+</center>
+ 
+    </a>
+</font>
+</H3>
+
+
+
+        
+        
+        
+    
+  
+
+    
+
+    
+    <script> 
+       const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=>{
+    if(window.scrollY >=100){
+        nav.classList.add('nav__black');
+    } else{
+        nav.classList.remove('nav__black');
+    }
+
+})
+
+
+    </script>
+
+
+
+
+
+
+</body>
+</html>

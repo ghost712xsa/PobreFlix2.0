@@ -1,0 +1,144 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="imagens/novalogo.png">
+    <title>PobreFlix</title>
+</head>
+<body bgcolor="black">
+<font face="arial">
+    <font color="White">
+
+    <style>
+        /* Estilos para as imagens do conteúdo */
+        .movie-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+        }
+
+        .movie-card {
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+
+        }
+
+        .movie-card img {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+    </style>
+    
+
+    <style> 
+#movableDiv {
+  position: absolute; /* Define a posição absoluta para que seja possível mover */
+  top: 200px; /* Posição inicial no eixo Y */
+  left: 450px; /* Posição inicial no eixo X */
+}
+
+    </style>
+
+    <center>
+       
+        <h1>Quem está assistindo?</h1>
+        
+        <div class="movie-cards" id="movableDiv">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+<a href="pagina inicial.html">
+        <img src="icon1.png" width="200" height="200"> 
+        </a>
+        <br>
+        DAVID
+
+    </div>
+<div class="movie-card" onmouseenter="changeBackground(1)">
+        
+        </div>
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="pagina inicial2.html">
+        <img src="icon3.jpg" width="200" height="200">
+    </a>
+        <br>
+        KIDS
+        </div>
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="table-formulario.html">
+        <img src="adicionar perfil.png" width="200" height="200">
+    </a>
+        <br>
+        ADICIONAR PERFIL
+    </div>
+
+</center>
+<br><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<center>
+    <h3>
+    <font color="RED">P</font>OBRE<font color="RED">F</font>LIX
+
+
+
+</h3>
+
+        
+
+
+
+
+    </center>
+    <script>
+    // Função para exibir o pop-up ao carregar a página
+    window.onload = function() {
+      var popup = document.getElementById('popup');
+      popup.style.display = 'flex'; // Exibe o pop-up
+    };
+
+    // Função para fechar o pop-up ao clicar no botão "Fechar"
+    function fecharPopup() {
+      var popup = document.getElementById('popup');
+      popup.style.display = 'none'; // Oculta o pop-up
+    }
+    </script>
+
+</body>
+</html>

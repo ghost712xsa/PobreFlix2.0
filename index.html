@@ -1,0 +1,179 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="imagens/novalogo.png">
+  <title>PobreFlix</title>
+  <style>
+    body {
+      background-image: url('loginP.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .login-container {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 50px;
+      border-radius: 0;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 400px;
+      height: 500px;
+    }
+
+    .input-field {
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 0;
+      border: none;
+      background-color: #333;
+      color: #fff;
+      box-sizing: border-box;
+      transition: all 0.3s ease-in-out;
+      font-size: 16px;
+    }
+
+    .input-field:focus {
+      outline: none;
+      background-color: #444;
+    }
+
+    .input-field::placeholder {
+      color: #fff;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 0;
+      background-color: #ff0000; /* Vermelho intenso: #ff0000 */
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .submit-button:hover {
+      background-color: #e60000; /* Tom mais escuro ao passar o mouse */
+    }
+
+    /* Estilo para o botão de rádio quadrado */
+    .square-radio {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border: 2px solid #fff; /* Cor da borda do botão de rádio */
+      width: 20px; /* Largura do botão de rádio */
+      height: 20px; /* Altura do botão de rádio */
+      border-radius: 0; /* Removendo o arredondamento */
+      outline: none;
+      cursor: pointer;
+      background-color: transparent; /* Removendo o fundo padrão */
+      vertical-align: middle;
+      margin-right: 10px; /* Espaçamento entre o botão de rádio e o texto */
+    }
+
+    .square-radio:checked {
+      background-color: #fff; /* Cor de preenchimento quando selecionado */
+    }
+  </style>
+
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-video {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+
+
+  <div id="myModal" class="modal">
+    <video class="modal-video" autoplay muted playsinline>
+      <source src="introdução.mp4" type="video/mp4">
+      
+    </video>
+  </div>
+</head>
+<body>
+
+  <div class="login-container">
+    <h1 style="color: #fff;">Entrar</h1>
+    <form onsubmit="return validateForm()">
+      <br>
+      <input type="text" class="input-field" placeholder="Email ou número de telefone" id="email">
+      <br>
+      <input type="password" class="input-field" placeholder="Senha" id="password">
+      <br>
+      <input type="submit" value="Entrar" class="submit-button">
+      <br>
+      <br>
+      <br>
+      <br>
+      <label>
+        <input type="radio" name="opcao" class="square-radio">
+        <font color="white">
+        Lembre-se de mim &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Precisa de ajuda?
+        <br>
+        <br>
+        <br>
+        <br>
+        Novo por aqui? <u> Assine agora.<br></u>
+        <br>
+        <br>
+        <br>
+        Esta página é protegida pelo Google reCAPTCHA para 
+        garantir que você não é um robô.</font> <font color="blue"> Saiba mais.</font> 
+      </label>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+
+      // Verifica se o email e a senha correspondem aos dados desejados
+      if (email === 'admin' && password === 'admin') {
+        // Mostra o modal com o vídeo
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+
+        // Ao final do vídeo, redireciona para outra página
+        var video = document.querySelector('.modal-video');
+        video.onended = function() {
+          window.location.href = 'login_inicial.html';
+        };
+
+        return false; // Evita o envio do formulário
+      } else {
+        // Exibe uma mensagem de erro se os dados estiverem incorretos
+        alert('Senha incorreta. Tente novamente ou redefina sua senha.');
+        return false; // Evita o envio do formulário
+      }
+    }
+  </script>
+</body>
+</html>

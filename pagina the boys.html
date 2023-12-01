@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+      
+    <link rel="icon" type="image/x-icon" href="imagens/novalogo.png">
+    <title>PobreFlix</title>
+
+</head>
+<body>
+    <style>
+        /* Estilos para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999; /* Defina um valor alto para o z-index */
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black; /* Fundo preto */
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão de download */
+        .download-button, .watch-button {
+            display: inline-block;
+            padding: 70px 120px; /* Tamanho maior */
+            background-color: red; /* Cor do botão vermelho */
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            margin: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão "Assistir Online" */
+        .watch-button {
+            background-color: green; /* Cor do botão verde */
+        }
+
+        /* Estilos para o vídeo incorporado */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Proporção de 16:9 para o vídeo */
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Aumente o tamanho do vídeo */
+            height: 100%; /* Aumente o tamanho do vídeo */
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #e50914;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #ff141a;
+        }
+
+        /* Estilos para as imagens do conteúdo */
+        .movie-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .movie-card {
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .movie-card img {
+            width: 300px;
+            height: 450px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estilos para as imagens de fundo */
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .background-images img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Define uma classe para cada imagem de fundo */
+        .background-1 img {
+            opacity: 0;
+        }
+
+        .background-2 img {
+            opacity: 0;
+        }
+
+        .background-3 img {
+            opacity: 0;
+        }
+    </style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            height: 2000px;
+            background: #f0f0f0;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .scrolling-text {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: "black;";
+            color: "black;";
+            padding: 10px;
+            display: none;
+             z-index: 998;
+        }
+    </style>
+
+</head>
+<body><nav id="nav">
+   <div class="nav" id="nav">
+</nav>
+<!-- Barra lateral com os botões -->
+    
+
+        
+
+        
+
+        
+        
+        
+
+
+
+
+
+
+
+        
+
+        
+
+
+        
+        
+
+        
+
+
+
+
+        
+    </div>
+
+    <script>
+        var sidebar = document.getElementById("sidebar");
+
+        // Função para mostrar a barra lateral
+        sidebar.addEventListener("mouseenter", function() {
+            sidebar.style.left = "0";
+
+        });
+
+        // Função para ocultar a barra lateral
+        sidebar.addEventListener("mouseleave", function(event) {
+            sidebar.style.left = "-200px";
+        });
+
+        // Fechar a barra lateral quando o mouse clica fora dela
+        document.addEventListener("click", function(event) {
+            if (event.target !== sidebar) {
+                sidebar.style.left = "-200px";
+            }
+        });
+    </script>
+
+    
+    <div class="scrolling-text" id="fixed-text">
+        <h1> <font color="red">P</font>obre<font color="red">F</font>lix</h1>
+    </div>
+    <script>
+        window.addEventListener('scroll', function() {
+            const scrollingText = document.getElementById('fixed-text');
+            if (window.scrollY > 200) {
+                scrollingText.style.display = 'block';
+            } else {
+                scrollingText.style.display = 'none';
+            }
+        });
+    </script>
+    <style>
+        /* Estilo para a barra lateral */
+        #sidebar {
+            position: fixed;
+            left: -200px; /* Define a posição inicial oculta */
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            transition: left 0.3s;
+            z-index: 999
+        }
+        
+        /* Estilo para os botões na barra lateral */
+        #sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+
+        }
+    </style>
+
+    <!-- Modal para a janela flutuante -->
+    
+
+    <header>
+       <h1> <font color="red">P</font>obre<font color="red">F</font>lix</h1>
+        <div class="button-container">
+            <a class="button" href="pagina inicial.html">Voltar</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            
+            
+         
+        </div>
+    </header>
+<H2> <center>THE BOYS - COMPLETO</center> </H2>
+    
+
+           <!--FILME 1 -->
+    <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            
+            <img src="the boys 1 temporada.jpg" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+       THE BOYS - 1 TEMPORADA 
+        <BR>
+
+            ⭐ ⭐ ⭐ ⭐ ⭐  - IMDB
+            <BR>
+
+<a class="button" href="magnet:?xt=urn:btih:F22370237FC1F8ADDE6BDE8883BAFDC172B029BA&dn=%5bACESSE%20comando.to%5d%20The%20Boys%201%c2%aa%20Temporada%20Completa%202019%20%5b720p%5d%20%5bWEB-DL%5d%20%5bDUAL%5d&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.coppersurfer.tk%3a6969%2fannounce&tr=udp%3a%2f%2fglotorrents.pw%3a6969%2fannounce&tr=udp%3a%2f%2ftracker4.piratux.com%3a6969%2fannounce&tr=udp%3a%2f%2fcoppersurfer.tk%3a6969%2fannounce&tr=http%3a%2f%2ft2.pow7.com%2fannounce&tr=http%3a%2f%2ftracker.yify-torrents.com%2fannounce&tr=http%3a%2f%2fwww.h33t.com%3a3310%2fannounce&tr=http%3a%2f%2fexodus.desync.com%2fannounce&tr=http%3a%2f%2ftracker.coppersurfer.tk%3a6969%2fannounce&tr=http%3a%2f%2fbt.careland.com.cn%3a6969%2fannounce&tr=http%3a%2f%2fexodus.desync.com%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.istole.it%3a80%2fannounce&tr=http%3a%2f%2ftracker.blazing.de%2fannounce&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.yify-torrents.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.prq.to%2fannounce&tr=udp%3a%2f%2ftracker.1337x.org%3a80%2fannounce&tr=udp%3a%2f%2f9.rarbg.com%3a2740%2fannounce&tr=udp%3a%2f%2ftracker.ex.ua%3a80%2fannounce&tr=udp%3a%2f%2fipv4.tracker.harry.lu%3a80%2fannounce&tr=udp%3a%2f%2f12.rarbg.me%3a80%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce&tr=udp%3a%2f%2f11.rarbg.com%2fannounce&tr=udp%3a%2f%2ftracker.ccc.de%3a80%2fannounce&tr=udp%3a%2f%2ffr33dom.h33t.com%3a3310%2fannounce&tr=udp%3a%2f%2fpublic.popcorn-tracker.org%3a6969%2fannounce
+
+">COMPLETO - 720p
+</a>
+</div>
+
+
+ <!--FILME 2 -->
+    <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            
+            <img src="the boys 2 temporada.png" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+       THE BOYS - 2 TEMPORADA 
+        <BR>
+
+            ⭐ ⭐ ⭐ ⭐ ⭐  - IMDB
+            <BR>
+
+<a class="button" href="magnet:?xt=urn:btih:69a627116cb4c4721c1eaa4e547a8032de489b1b&dn=LAPUMiA.Org%20-%20The.Boys.S02.1080p.AMZN.WEB-DL.DDP5.1.H.264-DUAL&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.coppersurfer.tk%3a6969%2fannounce&tr=http%3a%2f%2fglotorrents.pw%3a80%2fannounce&tr=udp%3a%2f%2ftracker4.piratux.com%3a6969%2fannounce&tr=udp%3a%2f%2fcoppersurfer.tk%3a6969%2fannounce&tr=http%3a%2f%2ft2.pow7.com%2fannounce&tr=udp%3a%2f%2ftracker.yify-torrents.com%3a80%2fannounce&tr=http%3a%2f%2fwww.h33t.com%3a3310%2fannounce&tr=udp%3a%2f%2fexodus.desync.com%3a6969%2fannounce&tr=http%3a%2f%2ftracker.coppersurfer.tk%3a6969%2fannounce&tr=http%3a%2f%2fbt.careland.com.cn%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.istole.it%3a80%2fannounce&tr=http%3a%2f%2ftracker.blazing.de%2fannounce&tr=http%3a%2f%2ftracker.yify-torrents.com%2fannounce&tr=udp%3a%2f%2ftracker.prq.to%2fannounce&tr=udp%3a%2f%2ftracker.1337x.org%3a80%2fannounce&tr=udp%3a%2f%2f9.rarbg.com%3a2740%2fannounce&tr=udp%3a%2f%2ftracker.ex.ua%3a80%2fannounce&tr=udp%3a%2f%2fipv4.tracker.harry.lu%3a80%2fannounce&tr=udp%3a%2f%2f12.rarbg.me%3a80%2fannounce&tr=udp%3a%2f%2f11.rarbg.com%2fannounce&tr=udp%3a%2f%2ftracker.ccc.de%3a80%2fannounce&tr=udp%3a%2f%2ffr33dom.h33t.com%3a3310%2fannounce&tr=udp%3a%2f%2fpublic.popcorn-tracker.org%3a6969%2fannounce
+">COMPLETO - 1080p 
+</a>
+<br>
+<a class="button" href="magnet:?xt=urn:btih:ce5e14608b579c69b3416d93be5efcbeb273454f&dn=LAPUMiA.Org%20-%20The.Boys.S02.720p.AMZN.WEB-DL.DDP5.1.H.264-DUAL&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.trackerfix.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.coppersurfer.tk%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.leechers-paradise.org%3a6969%2fannounce&tr=udp%3a%2f%2feddie4.nl%3a6969%2fannounce&tr=udp%3a%2f%2fp4p.arenabg.com%3a1337%2fannounce&tr=udp%3a%2f%2fexplodie.org%3a6969%2fannounce&tr=udp%3a%2f%2fzer0day.ch%3a1337%2fannounce
+">COMPLETO - 720p 
+</a>
+</div>
+
+
+
+<!--FILME 3 -->
+    <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            
+            <img src="the boys 3 temporada.jpg" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+       THE BOYS - 3 TEMPORADA 
+        <BR>
+
+            ⭐ ⭐ ⭐ ⭐ ⭐  - IMDB
+            <BR>
+
+<a class="button" href="magnet:?xt=urn:btih:19EC5038AE2E852B634BC15140B65DEB3B7CD27F&dn=The.Boys.S03E01.1080p.AMZN.WEB-DL.DDP5.1.H.264-www.animestotais.xyz&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce
+">1 EPISÓDIO 
+</a>
+
+<BR>
+
+<a class="button" href="magnet:?xt=urn:btih:0201FD80DB5CB78485AEABAA68EC17F15E6E31BF&dn=The.Boys.S03E02.1080p.AMZN.WEB-DL.DDP5.1.H.264-www.animestotais.xyz&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce
+">2 EPISÓDIO 
+</a>
+<BR>
+<a class="button" href="magnet:?xt=urn:btih:26AA37CDB706460AC1D86822C31E3B2B07B9B66D&dn=The.Boys.S03E03.1080p.AMZN.WEB-DL.DDP5.1.H.264-www.animestotais.xyz&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce
+
+">3 EPISÓDIO 
+</a>
+<BR>
+<a class="button" href="magnet:?xt=urn:btih:F846C41EF91106D78FE861EA66F0B4328926571B&dn=The.Boys.S03E04.Glorious.Five.Year.Plan.1080p.AMZN.WEB-DL.DDP5.1.H.264.Dual-www.animestotais.xyz&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce
+
+">4 EPISÓDIO 
+</a>
+
+<BR>
+<a class="button" href="magnet:?xt=urn:btih:F6347AB1DEF0378A4F06E224BAE39BD485A5B312&dn=The.Boys.S03E05.1080p.AMZN.WEB-DL.DDP5.1.H.264.Dual-www.animestotais.xyz&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce
+
+">5 EPISÓDIO 
+</a>
+
+<BR>
+<a class="button" href="magnet:?xt=urn:btih:CVISIYC7PL3C4RWSXZXBMPA537VAIWD2&dn=The.Boys.S03E06.1080p.WEB-DL.DUAL&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce
+
+">6 EPISÓDIO 
+</a>
+
+<BR>
+<a class="button" href="magnet:?xt=urn:btih:BC82C51ED4A1A01BB9F5C74C1F739A681F9CC060&dn=The%20Boys%20S03E07%20WEB-DL%201080p%20DUAL%205.1-www.animestotais.xyz&tr=udp%3a%2f%2fexodus.desync.com%3a6969%2fannounce&tr=udp%3a%2f%2fopen.stealth.si%3a80%2fannounce&tr=udp%3a%2f%2ftracker.internetwarriors.net%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=udp%3a%2f%2fwww.torrent.eu.org%3a451%2fannounce
+
+">7 EPISÓDIO 
+</a>
+
+<BR>
+<a class="button" href="magnet:?xt=urn:btih:AC0A1331AF5273E47C6E13DDCD273D162C1BE694&dn=The%20Boys%20S03E08%20WEB-DL%201080p%20DUAL%205.1-www.animestotais.xyz&tr=udp%3a%2f%2fexodus.desync.com%3a6969%2fannounce&tr=udp%3a%2f%2fopen.stealth.si%3a80%2fannounce&tr=udp%3a%2f%2ftracker.internetwarriors.net%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&tr=udp%3a%2f%2fwww.torrent.eu.org%3a451%2fannounce
+
+">8 EPISÓDIO 
+</a>
+<h3><font color="red">(1080p)</font></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+           
+            </center>
+        </div>
+
+       
+
+
+
+
+    <!-- Imagens de fundo -->
+    <div class="background-images">
+        <div class="background-1">
+            <img src="wall1.jpg" alt="Background 1">
+        </div>
+        <div class="background-2">
+            <img src="wall2.jpg" alt="Background 2">
+        </div>
+        <div class="background-3">
+            <img src="wall3.jpg" alt="Background 3">
+        </div>
+        <!-- Adicione mais divs de fundo, se necessário -->
+    </div>
+
+    <script>
+        // Função para trocar as imagens de fundo
+        let currentBackground = 1
+
+
+
+        function changeBackground(nextBackground) {
+            if (nextBackground !== currentBackground) {
+                document.querySelector(`.background-${currentBackground} img`).style.opacity = 0;
+                document.querySelector(`.background-${nextBackground} img`).style.opacity = 0;
+                currentBackground = nextBackground;
+            }
+        }
+
+        // Funções para zoom nas imagens
+        function zoomIn(imagem) {
+            imagem.style.transform = "scale(1.05)";
+        }
+
+        function zoomOut(imagem) {
+            imagem.style.transform = "scale(1)";
+        }
+
+        // Adicionando o evento de clique na imagem
+        const imagens = document.querySelectorAll('.movie-card img');
+        const modal = document.getElementById("myModal");
+        const trailer = document.getElementById("trailer");
+        const botaoDownload = document.getElementById("botao-download");
+        const botaoOnline = document.getElementById("botao-online");
+
+        imagens.forEach(function(imagem, index) {
+            imagem.addEventListener("click", function() {
+                const trailerURL = this.getAttribute('data-trailer');
+                const downloadURL = this.getAttribute('data-download');
+                const streamURL = this.getAttribute('data-stream');
+                trailer.src = trailerURL;
+                botaoDownload.href = downloadURL;
+                botaoOnline.href = streamURL;
+                modal.style.display = "block";
+                changeBackground(index + 1);
+            });
+        });
+
+        // Fechar o modal ao clicar fora dele
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                trailer.src = "";
+            }
+        }
+
+        // Filtrar filmes por gênero
+        const genreDropdown = document.getElementById("genreDropdown");
+        const movieCards = document.querySelectorAll(".movie-card");
+
+        genreDropdown.addEventListener("change", function() {
+            const selectedGenre = genreDropdown.value;
+
+            if (selectedGenre === "") {
+                movieCards.forEach(function(card) {
+                    card.style.display = "block";
+                });
+            } else {
+                movieCards.forEach(function(card) {
+                    const cardGenre = card.getAttribute("data-genre");
+                    if (cardGenre === selectedGenre) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            }
+        });
+    </script>
+    <script> 
+       const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=>{
+    if(window.scrollY >=100){
+        nav.classList.add('nav__black');
+    } else{
+        nav.classList.remove('nav__black');
+    }
+
+})
+
+
+    </script>
+</body>
+</html>

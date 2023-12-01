@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="imagens/novalogo.png">
+    <title>PobreFlix</title>
+    <style>
+        body {
+            background-color: #000; /* Fundo preto */
+            color: #fff; /* Letras brancas */
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            border-radius: 10px; /* Arredonde as bordas da tabela */
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Adicione uma sombra suave */
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333; /* Cor de fundo do cabeçalho da tabela */
+        }
+
+        tr:nth-child(even) {
+            background-color: #444; /* Cor de fundo para linhas pares */
+        }
+
+        tr:nth-child(odd) {
+            background-color: #555; /* Cor de fundo para linhas ímpares */
+        }
+
+        form {
+            padding: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        input[type="email"],
+        .button {
+            width: 25%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .button {
+            background-color: #e50914; /* Cor de fundo vermelha  */
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <center>
+    <font face="arial">
+    <h1>Adicionar perfil</h1>
+   <img src="icon1_editar.png" width="200" height="200">
+    
+    <form action="processar_formulario.php" method="POST">
+        <table>
+            <tr>
+                <td>Nome:</td>
+                <td><input type="text" name="nome" required></td>
+            </tr>
+            <tr>
+                <td>Qual o perfil? </td>
+                <td>
+                <label>
+        Infantil:
+        <input type="radio" name="opcao" value opcao1>
+    </label>
+    <Br>
+    Adulto:
+    <input type="radio" name="opcao" value="opcao2">
+    </label>
+</td>
+
+            </tr>
+            
+        </table>
+        <br>
+        <input type="submit" class="button" value="Enviar">
+        <a href="login_inicial.html">
+            <input type="button" class="button" value="Voltar">
+        </a>
+    </form>
+</center>
+
+</body>
+</html>

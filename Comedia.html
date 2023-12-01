@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+      
+    <link rel="icon" type="image/x-icon" href="imagens/novalogo.png">
+    <title>PobreFlix</title>
+
+</head>
+<body>
+    <style>
+        /* Estilos para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999; /* Defina um valor alto para o z-index */
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black; /* Fundo preto */
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão de download */
+        .download-button, .watch-button {
+            display: inline-block;
+            padding: 70px 120px; /* Tamanho maior */
+            background-color: red; /* Cor do botão vermelho */
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            margin: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão "Assistir Online" */
+        .watch-button {
+            background-color: green; /* Cor do botão verde */
+        }
+
+        /* Estilos para o vídeo incorporado */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Proporção de 16:9 para o vídeo */
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Aumente o tamanho do vídeo */
+            height: 100%; /* Aumente o tamanho do vídeo */
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #e50914;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #ff141a;
+        }
+
+        /* Estilos para as imagens do conteúdo */
+        .movie-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .movie-card {
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .movie-card img {
+            width: 300px;
+            height: 450px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estilos para as imagens de fundo */
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .background-images img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Define uma classe para cada imagem de fundo */
+        .background-1 img {
+            opacity: 0;
+        }
+
+        .background-2 img {
+            opacity: 0;
+        }
+
+        .background-3 img {
+            opacity: 0;
+        }
+    </style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            height: 2000px;
+            background: #f0f0f0;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .scrolling-text {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: "black;";
+            color: "black;";
+            padding: 10px;
+            display: none;
+             z-index: 998;
+        }
+    </style>
+
+</head>
+<body>
+    <script>
+        var sidebar = document.getElementById("sidebar");
+
+        // Função para mostrar a barra lateral
+        sidebar.addEventListener("mouseenter", function() {
+            sidebar.style.left = "0";
+
+        });
+
+        // Função para ocultar a barra lateral
+        sidebar.addEventListener("mouseleave", function(event) {
+            sidebar.style.left = "-200px";
+        });
+
+        // Fechar a barra lateral quando o mouse clica fora dela
+        document.addEventListener("click", function(event) {
+            if (event.target !== sidebar) {
+                sidebar.style.left = "-200px";
+            }
+        });
+    </script>
+
+    
+    <div class="scrolling-text" id="fixed-text">
+        <h1> <font color="red">P</font>obre<font color="red">F</font>lix</h1>
+    </div>
+    <script>
+        window.addEventListener('scroll', function() {
+            const scrollingText = document.getElementById('fixed-text');
+            if (window.scrollY > 200) {
+                scrollingText.style.display = 'block';
+            } else {
+                scrollingText.style.display = 'none';
+            }
+        });
+    </script>
+    <style>
+        /* Estilo para a barra lateral */
+        #sidebar {
+            position: fixed;
+            left: -200px; /* Define a posição inicial oculta */
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            transition: left 0.3s;
+            z-index: 999
+        }
+        
+        /* Estilo para os botões na barra lateral */
+        #sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+
+        }
+    </style>
+
+    <!-- Modal para a janela flutuante -->
+    
+
+    <header>
+       <h1> <font color="red">P</font>obre<font color="red">F</font>lix</h1>
+        <div class="button-container">
+            <a class="button" href="pagina inicial.html">Voltar</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            
+            
+         
+        </div>
+    </header>
+<H2> <center>COMÉDIA</center> </H2>
+    
+
+           <!--FILME 1 -->
+    <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="https://rkplayer.com/e/tt11951276#MA==">
+            <img src="A outra zoey.png" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+        A OUTRA ZOEY 
+        <BR>
+
+            ⭐ ⭐ ⭐ ⭐ ✩ - IMDB
+            </center>
+        </div>
+
+        <!--FILME 2 -->
+
+        <div class="movie-card" onmouseenter="changeBackground(2)">
+        <a href="https://rkplayer.com/e/tt7284204#MQ==">
+            <img src="verão 2003.jpg" width="300" height="450" 
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+       </a>
+       <BR>
+       <center>
+         
+        VERÃO 2003 <BR>
+        
+        
+        ⭐ ⭐ ⭐ ✩ ✩ - IMDB   
+       </center>
+       
+        </div>
+
+
+           <!--FILME 3  -->
+
+        <div class="movie-card" onmouseenter="changeBackground(3)">
+            <a href="https://rkplayer.com/e/tt4495098#MA==">
+            <img src="gran turismo.jpg" width="300" height="450" 
+            onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+        </a>
+        <BR>
+        <center>
+            GRAN TURISMO: DE JOGADOR<br> 
+            A CORREDOR
+            <BR>
+            ⭐ ⭐ ⭐ ✩ ✩ - IMDB
+        </center>
+         
+        </div>
+
+
+
+        <!--FILME 4 -->
+
+        <div class="movie-card" onmouseenter="changeBackground(4)">
+            <a href="https://rkplayer.com/e/tt9362930#MA==">
+            <img src="besouro azul.png" width="300" height="450" 
+             onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+         </a>
+         <br>
+         <center>
+             BESOURO AZUL
+             <BR>
+             ⭐ ⭐ ⭐ ✩ ✩ - IMDB
+         </center>   
+        </div>
+
+</body>
+</html>

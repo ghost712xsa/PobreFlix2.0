@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+      
+    <link rel="icon" type="image/x-icon" href="imagens/novalogo.png">
+    <title>PobreFlix</title>
+
+</head>
+<body>
+    <style>
+        /* Estilos para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999; /* Defina um valor alto para o z-index */
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black; /* Fundo preto */
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão de download */
+        .download-button, .watch-button {
+            display: inline-block;
+            padding: 70px 120px; /* Tamanho maior */
+            background-color: red; /* Cor do botão vermelho */
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            margin: 20px;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        /* Estilos para o botão "Assistir Online" */
+        .watch-button {
+            background-color: green; /* Cor do botão verde */
+        }
+
+        /* Estilos para o vídeo incorporado */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Proporção de 16:9 para o vídeo */
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Aumente o tamanho do vídeo */
+            height: 100%; /* Aumente o tamanho do vídeo */
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #e50914;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #ff141a;
+        }
+
+        /* Estilos para as imagens do conteúdo */
+        .movie-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+
+        .movie-card {
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .movie-card img {
+            width: 300px;
+            height: 450px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estilos para as imagens de fundo */
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .background-images img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Define uma classe para cada imagem de fundo */
+        .background-1 img {
+            opacity: 0;
+        }
+
+        .background-2 img {
+            opacity: 0;
+        }
+
+        .background-3 img {
+            opacity: 0;
+        }
+    </style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            height: 2000px;
+            background: #f0f0f0;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .scrolling-text {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: "black;";
+            color: "black;";
+            padding: 10px;
+            display: none;
+             z-index: 998;
+        }
+    </style>
+
+</head>
+<body><nav id="nav">
+   <div class="nav" id="nav">
+</nav>
+<!-- Barra lateral com os botões -->
+    
+
+        
+
+        
+
+        
+        
+        
+
+
+
+
+
+
+
+        
+
+        
+
+
+        
+        
+
+        
+
+
+
+
+        
+    </div>
+
+    <script>
+        var sidebar = document.getElementById("sidebar");
+
+        // Função para mostrar a barra lateral
+        sidebar.addEventListener("mouseenter", function() {
+            sidebar.style.left = "0";
+
+        });
+
+        // Função para ocultar a barra lateral
+        sidebar.addEventListener("mouseleave", function(event) {
+            sidebar.style.left = "-200px";
+        });
+
+        // Fechar a barra lateral quando o mouse clica fora dela
+        document.addEventListener("click", function(event) {
+            if (event.target !== sidebar) {
+                sidebar.style.left = "-200px";
+            }
+        });
+    </script>
+
+    
+    <div class="scrolling-text" id="fixed-text">
+        <h1> <font color="red">P</font>obre<font color="red">F</font>lix</h1>
+    </div>
+    <script>
+        window.addEventListener('scroll', function() {
+            const scrollingText = document.getElementById('fixed-text');
+            if (window.scrollY > 200) {
+                scrollingText.style.display = 'block';
+            } else {
+                scrollingText.style.display = 'none';
+            }
+        });
+    </script>
+    <style>
+        /* Estilo para a barra lateral */
+        #sidebar {
+            position: fixed;
+            left: -200px; /* Define a posição inicial oculta */
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            transition: left 0.3s;
+            z-index: 999
+        }
+        
+        /* Estilo para os botões na barra lateral */
+        #sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+
+        }
+    </style>
+
+    <!-- Modal para a janela flutuante -->
+    
+
+    <header>
+       <h1> <font color="red">P</font>obre<font color="red">F</font>lix</h1>
+        <div class="button-container">
+            <a class="button" href="pagina inicial.html">Voltar</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            <div>
+        <a class="button" href="assistir agora.html">1</a>
+        <a class="button" href="assistir agora2.html">2</a>
+        <a class="button" href="assistir agora3.html">3</a>
+        </div>
+            
+            
+         
+        </div>
+    </header>
+<H2> <center>ASSISTA AGORA</center> </H2>
+<br>
+    
+ <!--FILME 1 -->
+    <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="https://rkplayer.com/e/tt11951276#MA==">
+            <img src="A outra zoey.png" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+        A OUTRA ZOEY 
+        <BR>
+
+            ⭐ ⭐ ⭐ ⭐ ✩ - IMDB
+            </center>
+        </div>
+
+        <div class="movie-card" onmouseenter="changeBackground(3)">
+            <a href="https://rkplayer.com/e/tt4495098#MA==">
+            <img src="gran turismo.jpg" width="300" height="450" 
+            onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+        </a>
+        <BR>
+        <center>
+            GRAN TURISMO: DE JOGADOR<br> 
+            A CORREDOR
+            <BR>
+            ⭐ ⭐ ⭐ ✩ ✩ - IMDB
+        </center>
+         
+        </div>
+
+<div class="movie-card" onmouseenter="changeBackground(2)">
+        <a href="https://rkplayer.com/e/tt9603212#MA==">
+            <img src="Missão impossivel acerto de contas.jpg" width="300" height="450" 
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+       </a>
+       <BR>
+       <center>
+         
+        MISSÃO: IMPOSSÍVEL - ACERTO <BR>
+        DE CONTAS PARTE 1
+        <BR>
+        ⭐ ⭐ ⭐ ✩ ✩ - IMDB   
+       </center>
+       
+        </div>
+
+         <div class="movie-card" onmouseenter="changeBackground(2)">
+        <a href="A morte do demonio a ascensao.html">
+            <img src="morte-do-demonio.jpg" width="300" height="450" 
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+       </a>
+       <BR>
+       <center>
+        A MORTE DO DEMÔNIO: A ASCENSÃO   
+        <BR>
+        ⭐ ⭐ ⭐ ✩ ✩ - IMDB   
+       </center>
+       
+        </div>
+
+        <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="https://rkplayer.com/e/tt14400246#MA==">
+            <img src="BIRD BOX.jpg" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+        BIRD BOX: BARCELONA 
+        <BR>
+
+            ⭐ ⭐ ⭐ ✩ ✩ - IMDB
+            </center>
+        </div>
+
+        <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="https://rkplayer.com/e/tt21807222#MA==">
+            <img src="jogos mortais x.jpg" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+        JOGOS MORTAIS X  
+        <BR>
+
+            ⭐ ⭐ ⭐ ⭐ ✩ - IMDB
+            </center>
+        </div>
+
+        <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="https://rkplayer.com/e/tt11358390#MA==">
+            <img src="RENFIELD.jpg" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+       RENFIELD 
+        <BR>
+
+            ⭐ ⭐ ⭐ ✩ ✩ - IMDB
+            </center>
+        </div>
+
+        <div class="movie-cards">
+        <div class="movie-card" onmouseenter="changeBackground(1)">
+            <a href="https://rkplayer.com/e/tt15683734#MQ==">
+            <img src="NÃO ABRA.jpg" width="300" height="450"
+           onmouseenter="zoomIn(this)" onmouseleave="zoomOut(this)">
+           <br>
+       </a>
+       <center> 
+        NÃO ABRA! 
+        <BR>
+
+            ⭐ ⭐ ⭐ ✩ ✩ - IMDB
+            </center>
+        </div>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
+    <script>
+        // Função para trocar as imagens de fundo
+        let currentBackground = 1
+
+
+
+        function changeBackground(nextBackground) {
+            if (nextBackground !== currentBackground) {
+                document.querySelector(`.background-${currentBackground} img`).style.opacity = 0;
+                document.querySelector(`.background-${nextBackground} img`).style.opacity = 0;
+                currentBackground = nextBackground;
+            }
+        }
+
+        // Funções para zoom nas imagens
+        function zoomIn(imagem) {
+            imagem.style.transform = "scale(1.05)";
+        }
+
+        function zoomOut(imagem) {
+            imagem.style.transform = "scale(1)";
+        }
+
+        // Adicionando o evento de clique na imagem
+        const imagens = document.querySelectorAll('.movie-card img');
+        const modal = document.getElementById("myModal");
+        const trailer = document.getElementById("trailer");
+        const botaoDownload = document.getElementById("botao-download");
+        const botaoOnline = document.getElementById("botao-online");
+
+        imagens.forEach(function(imagem, index) {
+            imagem.addEventListener("click", function() {
+                const trailerURL = this.getAttribute('data-trailer');
+                const downloadURL = this.getAttribute('data-download');
+                const streamURL = this.getAttribute('data-stream');
+                trailer.src = trailerURL;
+                botaoDownload.href = downloadURL;
+                botaoOnline.href = streamURL;
+                modal.style.display = "block";
+                changeBackground(index + 1);
+            });
+        });
+
+        // Fechar o modal ao clicar fora dele
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                trailer.src = "";
+            }
+        }
+
+        // Filtrar filmes por gênero
+        const genreDropdown = document.getElementById("genreDropdown");
+        const movieCards = document.querySelectorAll(".movie-card");
+
+        genreDropdown.addEventListener("change", function() {
+            const selectedGenre = genreDropdown.value;
+
+            if (selectedGenre === "") {
+                movieCards.forEach(function(card) {
+                    card.style.display = "block";
+                });
+            } else {
+                movieCards.forEach(function(card) {
+                    const cardGenre = card.getAttribute("data-genre");
+                    if (cardGenre === selectedGenre) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            }
+        });
+    </script>
+    <script> 
+       const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=>{
+    if(window.scrollY >=100){
+        nav.classList.add('nav__black');
+    } else{
+        nav.classList.remove('nav__black');
+    }
+
+})
+
+
+    </script>
+</body>
+</html>

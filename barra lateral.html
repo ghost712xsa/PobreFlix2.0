@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Estilo para a barra lateral */
+        #sidebar {
+            position: fixed;
+            left: -200px; /* Define a posição inicial oculta */
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            transition: left 0.3s;
+        }
+        
+        /* Estilo para os botões na barra lateral */
+        #sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra lateral com os botões -->
+    <div id="sidebar">
+        <a href="#">Star+</a>
+        <a href="#">Cartoon Network</a>
+        <a href="#">Disney</a>
+        <a href="https://redecanaistv.zip/assistir-tlc-online-24-horas-ao-vivo_64589fa18.html">TLC</a>
+        <a href="#">Animal Planet</a>
+    </div>
+
+    <script>
+        var sidebar = document.getElementById("sidebar");
+
+        // Função para mostrar a barra lateral
+        sidebar.addEventListener("mouseenter", function() {
+            sidebar.style.left = "0";
+        });
+
+        // Função para ocultar a barra lateral
+        sidebar.addEventListener("mouseleave", function(event) {
+            sidebar.style.left = "-200px";
+        });
+
+        // Fechar a barra lateral quando o mouse clica fora dela
+        document.addEventListener("click", function(event) {
+            if (event.target !== sidebar) {
+                sidebar.style.left = "-200px";
+            }
+        });
+    </script>
+</body>
+</html>
